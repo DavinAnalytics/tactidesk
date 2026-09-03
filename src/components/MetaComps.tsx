@@ -63,7 +63,7 @@ export function MetaComps({ onPin, onOpen }: Props) {
               <div className="meta-units">
                 {comp.units.map((unit) => (
                   <div key={unit.championId} className="pin-unit" title={unit.champion.name}>
-                    <Icon src={unit.champion.icon} alt={unit.champion.name} cost={unit.champion.cost} size={40} />
+                    <Icon src={unit.champion.icon} alt={unit.champion.name} cost={unit.champion.cost} size={36} />
                     <div className="pin-items">
                       {unit.itemIds.map((itemId) => {
                         const item = itemById.get(itemId);
