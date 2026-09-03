@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { findChampion, findItem } from "./lookup";
-import { ITEM_GUIDE, META_COMPS, META_RESOLVE_ISSUES } from "./meta";
+import { ITEM_GUIDE, META_COMPS, META_RESOLVE_ISSUES, isReroll, threeStarNames } from "./meta";
 
 describe("meta snapshot", () => {
   it("resolves every champion and item name", () => {
@@ -24,9 +24,15 @@ describe("meta snapshot", () => {
     expect(findItem("Warmogs")?.name).toMatch(/Warmog/i);
   });
 
-  it("pins a meta board with stable id", () => {
+  it("marks 3-star targets on every reroll line", () => {
+    const rerolls = META_COMPS.filter((comp) => isReroll(comp));
+    expect(rerolls.length).toBeGreaterThanOrEqual(6);
+    for (const comp of rerolls) {
+      expect(threeStarNames(comp).length).toBeGreaterThanOrEqual(2);
+    }
+    const kayle = META_COMPS.find((comp) => comp.id === "kayle-reroll");
+    expect(threeStarNames(kayle!)).toEqual(expect.arrayContaining(["Kayle", "Xayah", "Ornn"]));
     const primal = META_COMPS.find((comp) => comp.id === "primal-malphite");
-    expect(primal?.units[0]?.champion.name).toBe("Nidalee");
-    expect(primal?.units[0]?.itemIds.length).toBe(3);
+    expect(threeStarNames(primal!)).toEqual([]);
   });
 });

@@ -31,8 +31,8 @@ export function PinStrip({ comps, onOpen }: Props) {
               const champ = championById.get(unit.championId);
               if (!champ) return null;
               return (
-                <div key={unit.championId} className="pin-unit">
-                  <Icon src={champ.icon} alt={champ.name} cost={champ.cost} size={42} />
+                <div key={unit.championId} className={unit.stars === 3 ? "pin-unit star3" : "pin-unit"}>
+                  <Icon src={champ.icon} alt={champ.name} cost={champ.cost} size={42} stars={unit.stars} />
                   <div className="pin-items">
                     {unit.items.map((itemId) => {
                       const found = itemById.get(itemId);

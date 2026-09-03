@@ -150,10 +150,13 @@ function CompEditor({
           const champ = championById.get(unit.championId);
           if (!champ) return null;
           return (
-            <div key={unit.championId} className="board-unit">
-              <Icon src={champ.icon} alt={champ.name} cost={champ.cost} size={48} />
+            <div key={unit.championId} className={unit.stars === 3 ? "board-unit star3" : "board-unit"}>
+              <Icon src={champ.icon} alt={champ.name} cost={champ.cost} size={48} stars={unit.stars} />
               <div>
-                <strong>{champ.name}</strong>
+                <strong>
+                  {champ.name}
+                  {unit.stars === 3 ? " ★★★" : ""}
+                </strong>
                 <div className="pin-items">
                   {unit.items.map((itemId, itemIndex) => {
                     const found = itemById.get(itemId);

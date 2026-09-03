@@ -87,7 +87,7 @@ export const RAW_META_COMPS: RawMetaComp[] = [
       { champion: "Kayle", items: ["Guinsoo's Rageblade", "Jeweled Gauntlet", "Rabadon's Deathcap"], stars: 3 },
       { champion: "Xayah", items: ["Guinsoo's Rageblade", "Red Buff"], stars: 3 },
       { champion: "Ornn", items: ["Warmogs Armor", "Gargoyle Stoneplate", "Spirit Visage"], stars: 3 },
-      { champion: "Rakan", items: ["Protector's Vow"] },
+      { champion: "Rakan", items: ["Protector's Vow"], stars: 3 },
       { champion: "Leona", items: [], stars: 3 },
       { champion: "Sejuani", items: [] },
       { champion: "Hecarim", items: [] },
@@ -121,7 +121,7 @@ export const RAW_META_COMPS: RawMetaComp[] = [
       { champion: "Nidalee", items: ["Guinsoo's Rageblade"] },
       { champion: "Vi", items: ["Gargoyle Stoneplate", "Warmogs Armor", "Spirit Visage"], stars: 3 },
       { champion: "Krug", items: [] },
-      { champion: "Rengar", items: ["Guinsoo's Rageblade", "Edge of Night", "Titan's Resolve"] },
+      { champion: "Rengar", items: ["Guinsoo's Rageblade", "Edge of Night", "Titan's Resolve"], stars: 3 },
     ],
   },
   {
@@ -230,8 +230,8 @@ export const RAW_META_COMPS: RawMetaComp[] = [
     units: [
       { champion: "Pebbles", items: ["Spear of Shojin", "Blue Buff", "Jeweled Gauntlet"], stars: 3 },
       { champion: "Cinderling", items: ["Guinsoo's Rageblade", "Red Buff"], stars: 3 },
-      { champion: "Murkwolf", items: ["Bloodthirster", "Titan's Resolve"] },
-      { champion: "Gromp", items: [] },
+      { champion: "Murkwolf", items: ["Bloodthirster", "Titan's Resolve"], stars: 3 },
+      { champion: "Gromp", items: [], stars: 3 },
       { champion: "Krug", items: ["Gargoyle Stoneplate"] },
       { champion: "Scuttlecrab", items: ["Warmogs Armor"] },
       { champion: "Mama Beak", items: [] },
@@ -246,7 +246,7 @@ export const RAW_META_COMPS: RawMetaComp[] = [
     units: [
       { champion: "Warwick", items: ["Spear of Shojin", "Titan's Resolve", "Sterak's Gage"], stars: 3 },
       { champion: "Rek'Sai", items: ["Bloodthirster"], stars: 3 },
-      { champion: "Veigar", items: ["Jeweled Gauntlet", "Blue Buff"] },
+      { champion: "Veigar", items: ["Jeweled Gauntlet", "Blue Buff"], stars: 3 },
       { champion: "Malphite", items: ["Gargoyle Stoneplate"] },
       { champion: "Azir", items: [] },
     ],
@@ -274,7 +274,7 @@ export const RAW_META_COMPS: RawMetaComp[] = [
     notes: "Playable if handed Yunara pairs. Weaker than the S/A lines — only from a strong opener.",
     units: [
       { champion: "Yunara", items: ["Infinity Edge", "Last Whisper", "Giant Slayer"], stars: 3 },
-      { champion: "Karma", items: ["Spear of Shojin"] },
+      { champion: "Karma", items: ["Spear of Shojin"], stars: 3 },
       { champion: "Sett", items: ["Warmogs Armor", "Bramble Vest"] },
       { champion: "Yorick", items: [] },
       { champion: "Ahri", items: [] },

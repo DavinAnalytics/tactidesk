@@ -67,6 +67,18 @@ export function resolveMetaComps(issues: ResolveIssue[] = []): ResolvedMetaComp[
 export const META_RESOLVE_ISSUES: ResolveIssue[] = [];
 export const META_COMPS = resolveMetaComps(META_RESOLVE_ISSUES);
 
+export function isReroll(comp: { style: string }): boolean {
+  return /reroll/i.test(comp.style);
+}
+
+export function threeStarNames(comp: ResolvedMetaComp): string[] {
+  return comp.units.filter((unit) => unit.stars === 3).map((unit) => unit.champion.name);
+}
+
+export function displayUnits(comp: ResolvedMetaComp): ResolvedMetaUnit[] {
+  return [...comp.units].sort((a, b) => Number(b.stars === 3) - Number(a.stars === 3));
+}
+
 export function activeTraits(comp: ResolvedMetaComp): Array<{ name: string; count: number; min: number }> {
   const counts = new Map<string, number>();
   for (const unit of comp.units) {

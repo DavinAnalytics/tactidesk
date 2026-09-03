@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { MetaTier, ResolvedMetaComp } from "../lib/meta";
-import { META_COMPS, META_PATCH, activeTraits } from "../lib/meta";
+import { META_COMPS, META_PATCH, activeTraits, displayUnits, isReroll, threeStarNames } from "../lib/meta";
 import { itemById } from "../data/catalog";
 import { Icon } from "./Icon";
 import { SearchBox } from "./SearchBox";
@@ -60,10 +60,20 @@ export function MetaComps({ onPin, onOpen }: Props) {
                   <em>{comp.style}</em>
                 </span>
               </button>
-              <div className="meta-units">
-                {comp.units.map((unit) => (
-                  <div key={unit.championId} className="pin-unit" title={unit.champion.name}>
-                    <Icon src={unit.champion.icon} alt={unit.champion.name} cost={unit.champion.cost} size={36} />
+              <div className={isReroll(comp) ? "meta-units reroll" : "meta-units"}>
+                {displayUnits(comp).map((unit) => (
+                  <div
+                    key={unit.championId}
+                    className={unit.stars === 3 ? "pin-unit star3" : "pin-unit"}
+                    title={unit.stars === 3 ? `${unit.champion.name} — 3-star` : unit.champion.name}
+                  >
+                    <Icon
+                      src={unit.champion.icon}
+                      alt={unit.champion.name}
+                      cost={unit.champion.cost}
+                      size={36}
+                      stars={unit.stars}
+                    />
                     <div className="pin-items">
                       {unit.itemIds.map((itemId) => {
                         const item = itemById.get(itemId);
@@ -73,6 +83,9 @@ export function MetaComps({ onPin, onOpen }: Props) {
                   </div>
                 ))}
               </div>
+              {isReroll(comp) && threeStarNames(comp).length ? (
+                <p className="star-line">3★ {threeStarNames(comp).join(" · ")}</p>
+              ) : null}
               <div className="trait-row">
                 {traits.map((trait) => (
                   <span key={trait.name} className="pill">

@@ -540,6 +540,41 @@ em {
   gap: 0.15rem;
 }
 
+.star-wrap {
+  position: relative;
+  display: inline-grid;
+  justify-items: center;
+}
+
+.star-badge {
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  line-height: 1;
+  letter-spacing: -0.12em;
+  color: #f5c84c;
+  text-shadow: 0 1px 2px #070b09, 0 0 5px #070b09;
+  pointer-events: none;
+  font-weight: 700;
+}
+
+.pin-unit.star3 .icon,
+.board-unit.star3 .icon {
+  box-shadow: inset 0 0 0 2px var(--cost, transparent), 0 0 0 2px #d4b24a;
+}
+
+.meta-units.reroll .pin-unit:not(.star3) {
+  opacity: 0.45;
+}
+
+.star-line {
+  margin: 0.2rem 0 0.35rem;
+  color: #f5c84c;
+  font-size: 0.75rem;
+}
+
 .board-units {
   display: grid;
   gap: 0.4rem;
