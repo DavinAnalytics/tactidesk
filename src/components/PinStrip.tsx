@@ -12,7 +12,7 @@ export function PinStrip({ comps, onOpen }: Props) {
   if (!pinned.length) {
     return (
       <div className="empty">
-        <p>Pin a board from Comps to keep it on this strip while you play.</p>
+        <p>Pin a meta board from Comps to keep it on this strip while you play.</p>
         <p className="muted">Static reference only — your notes, not live advice.</p>
       </div>
     );

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { setData } from "./data/catalog";
+import { notebookFromMeta } from "./lib/meta";
 import type { Comp, OverlayTab } from "./data/types";
+import type { ResolvedMetaComp } from "./lib/meta";
 import {
   addUnit,
   createComp,
@@ -84,6 +86,14 @@ export function App() {
     });
     updateComp({ ...active, units });
     flash("Item added to last unit");
+  }
+
+  function adoptMeta(comp: ResolvedMetaComp, pinned: boolean) {
+    const notebook = notebookFromMeta(comp, pinned);
+    setComps((current) => upsertComp(current, notebook));
+    setActiveId(notebook.id);
+    flash(pinned ? `Pinned ${comp.name}` : `Saved ${comp.name}`);
+    if (pinned) setTab("board");
   }
 
   function createAndSelect(): Comp {
@@ -194,6 +204,8 @@ export function App() {
                 flash(error instanceof Error ? error.message : "Import failed");
               }
             }}
+            onPinMeta={(comp) => adoptMeta(comp, true)}
+            onSaveMeta={(comp) => adoptMeta(comp, false)}
           />
         ) : null}
         {tab === "units" ? <UnitBrowser onAddToBoard={addChampion} /> : null}

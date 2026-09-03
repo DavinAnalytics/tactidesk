@@ -1,6 +1,9 @@
+import { useState } from "react";
 import type { Comp } from "../data/types";
+import type { ResolvedMetaComp } from "../lib/meta";
 import { championById, itemById } from "../data/catalog";
 import { Icon } from "./Icon";
+import { MetaComps } from "./MetaComps";
 
 type Props = {
   comps: Comp[];
@@ -12,6 +15,8 @@ type Props = {
   onChange: (comp: Comp) => void;
   onExport: () => void;
   onImport: (file: File) => void;
+  onPinMeta: (comp: ResolvedMetaComp) => void;
+  onSaveMeta: (comp: ResolvedMetaComp) => void;
 };
 
 export function CompLibrary({
@@ -24,10 +29,38 @@ export function CompLibrary({
   onChange,
   onExport,
   onImport,
+  onPinMeta,
+  onSaveMeta,
 }: Props) {
+  const [page, setPage] = useState<"meta" | "mine">("meta");
   const active = comps.find((comp) => comp.id === activeId) || null;
 
+  if (page === "meta") {
+    return (
+      <div className="stack">
+        <div className="chips">
+          <button type="button" className="chip on" onClick={() => setPage("meta")}>
+            Meta
+          </button>
+          <button type="button" className="chip" onClick={() => setPage("mine")}>
+            My boards
+          </button>
+        </div>
+        <MetaComps onPin={onPinMeta} onOpen={onSaveMeta} />
+      </div>
+    );
+  }
+
   return (
+    <div className="stack">
+      <div className="chips">
+        <button type="button" className="chip" onClick={() => setPage("meta")}>
+          Meta
+        </button>
+        <button type="button" className="chip on" onClick={() => setPage("mine")}>
+          My boards
+        </button>
+      </div>
     <div className="split">
       <div>
         <div className="toolbar gap">
@@ -76,6 +109,7 @@ export function CompLibrary({
           <p className="muted">Select a board to edit units, items, and notes.</p>
         )}
       </aside>
+    </div>
     </div>
   );
 }

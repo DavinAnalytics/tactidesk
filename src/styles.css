@@ -317,11 +317,131 @@ em {
 .item-list,
 .aug-list,
 .trait-list,
-.comp-list {
+.comp-list,
+.meta-list,
+.item-guide {
   display: grid;
   max-height: 46vh;
   overflow: auto;
   gap: 0.25rem;
+}
+
+.meta-list,
+.item-guide {
+  max-height: 58vh;
+  gap: 0.45rem;
+}
+
+.meta-card {
+  background: #101814;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 0.55rem 0.6rem 0.65rem;
+}
+
+.meta-card.on {
+  border-color: var(--line);
+}
+
+.meta-head {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.meta-title {
+  display: grid;
+}
+
+.meta-title em {
+  font-size: 0.75rem;
+}
+
+.tier {
+  min-width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.tier-s {
+  background: #5a4314;
+  color: #f5c84c;
+}
+
+.tier-a {
+  background: #163528;
+  color: #7dba6a;
+}
+
+.tier-b {
+  background: #1a2a40;
+  color: #7eb0ff;
+}
+
+.tier-c {
+  background: #2a1c20;
+  color: #c9a3a8;
+}
+
+.meta-body {
+  margin-top: 0.45rem;
+}
+
+.guide-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  text-align: left;
+  padding: 0.35rem 0.45rem;
+  background: #101814;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+.guide-row.on {
+  border-color: var(--gold);
+}
+
+.guide-name {
+  display: grid;
+  min-width: 0;
+}
+
+.guide-name em {
+  font-size: 0.72rem;
+}
+
+.guide-holders {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.holder-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.45rem 0 0.6rem;
+}
+
+.holder-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.holder-row em {
+  display: block;
+  font-size: 0.72rem;
 }
 
 .item-row,

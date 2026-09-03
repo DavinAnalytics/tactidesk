@@ -7,7 +7,8 @@ It is a **static reference**. You write your own boards before a match and pin t
 ## What it is
 
 - Overlay or browser panel for **Set 18: Enchanted Wilds**
-- Your pinned comps, with unit portraits and item slots
+- Meta comps tier list (S–C) you can pin, plus your own boards
+- Items page with usual holders for each completed item and emblem
 - Item forge (component + component)
 - Unit / trait / augment encyclopedia from [Community Dragon](https://www.communitydragon.org/)
 - Personal augment notes stored only on this machine
@@ -23,7 +24,9 @@ Riot’s TFT policy allows overlays that show **data available before the game**
 - Live win-chance or “pick this augment now”
 - Recommendations that change from the current game state
 
-Those MetaTFT-style features are omitted on purpose. If you want post-game review of *your* matches, use the official Riot TFT API with a personal key — that belongs in a separate tool, not in the overlay.
+The Comps tab opens on a **patch 18.1d snapshot** of common ladder lines (Primal Malphite, Flora Malphite, Solar Kayle, and so on). It is a curated static list, not MetaTFT’s live table and not a scraped copy of their stats. Pin a board before the game; it does not update from the live match.
+
+The Items tab lists completed items with the units that take them on those boards. Click an item to see holders and which comps use that pairing.
 
 Play TFT in **borderless windowed**. A normal always-on-top window sits on top; it does not inject into the game.
 
