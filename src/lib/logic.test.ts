@@ -64,6 +64,8 @@ describe("comp notebook", () => {
     expect(again.units).toHaveLength(1);
     const saved = upsertComp([], withUnit);
     expect(saved[0].name).toBe("Riftbeast");
+    const renamed = upsertComp(saved, { ...saved[0], name: "Riftbeast notes" });
+    expect(renamed[0].name).toBe("Riftbeast notes");
   });
 
   it("imports a comps payload", () => {

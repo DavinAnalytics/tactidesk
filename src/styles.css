@@ -34,6 +34,8 @@ input,
 textarea {
   font: inherit;
   color: inherit;
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
 }
 
 button {
@@ -121,6 +123,8 @@ button:hover {
   flex: 1;
   padding: 0.4rem 0.7rem 0.8rem;
   overflow: auto;
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
 }
 
 .main.compact .detail,

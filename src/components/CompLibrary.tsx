@@ -93,11 +93,16 @@ function CompEditor({
 }) {
   return (
     <div className="stack">
-      <input
-        className="title-input"
-        value={comp.name}
-        onChange={(event) => onChange({ ...comp, name: event.target.value })}
-      />
+      <label className="note-field">
+        Board name
+        <input
+          className="title-input"
+          type="text"
+          value={comp.name}
+          onChange={(event) => onChange({ ...comp, name: event.target.value })}
+          onKeyDown={(event) => event.stopPropagation()}
+        />
+      </label>
       <div className="toolbar gap">
         <button type="button" onClick={onPin}>
           {comp.pinned ? "Unpin from overlay" : "Pin to overlay"}

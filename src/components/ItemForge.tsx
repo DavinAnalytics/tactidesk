@@ -38,7 +38,12 @@ export function ItemForge({ onPickItem }: Props) {
     <div className="stack">
       <section>
         <h3>Forge</h3>
-        <p className="muted">Tap two components. Same component twice is a duplicate recipe.</p>
+        <p className="muted">
+          Tap two components
+          {left ? ` · ${components.find((item) => item.id === left)?.name || "component"}` : ""}
+          {right ? ` + ${components.find((item) => item.id === right)?.name || "component"}` : ""}
+          .
+        </p>
         <div className="forge-row">
           {components.map((item) => {
             const active = item.id === left || item.id === right;
