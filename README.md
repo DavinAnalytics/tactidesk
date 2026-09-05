@@ -4,6 +4,20 @@ A personal Teamfight Tactics overlay. Same job as the MetaTFT Overwolf app — c
 
 It is a **static reference**. You write your own boards before a match and pin them. It does not scout the lobby, read the live client, estimate win chance, or tell you what to pick.
 
+## Install on Windows
+
+You do not need Node.js, Git, or Overwolf.
+
+1. Download **TactiDesk-Setup.exe** from the [latest release](https://github.com/DavinAnalytics/tactidesk/releases/latest).
+2. Double-click it. If SmartScreen appears, click **More info** → **Run anyway**.
+3. TactiDesk installs for your user account, adds Start Menu and Desktop shortcuts, and opens itself.
+4. In League/TFT, set the game to **borderless windowed**.
+5. Hide or show the overlay with **Ctrl+Shift+T**.
+
+Uninstall from Windows Settings → Apps, or from the Start Menu shortcut folder.
+
+If a release is not up yet, open the [Windows installer workflow](https://github.com/DavinAnalytics/tactidesk/actions/workflows/windows-installer.yml), pick the latest successful run, and download the **TactiDesk-Windows-Setup** artifact.
+
 ## What it is
 
 - Overlay or browser panel for **Set 18: Enchanted Wilds**
@@ -30,7 +44,7 @@ The Items tab lists completed items with the units that take them on those board
 
 Play TFT in **borderless windowed**. A normal always-on-top window sits on top; it does not inject into the game.
 
-## Run it
+## Run from source
 
 ```bash
 npm install
@@ -43,6 +57,14 @@ Open `http://127.0.0.1:5173` in a browser (second monitor) or run the overlay sh
 ```bash
 npm run dev:electron
 ```
+
+Build the Windows installer (on Windows, or in GitHub Actions):
+
+```bash
+npm run dist:win
+```
+
+The setup file lands in `release/TactiDesk-Setup-<version>.exe`.
 
 Refresh set data after a patch:
 
