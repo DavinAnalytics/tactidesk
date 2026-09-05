@@ -301,6 +301,39 @@ export const EMBLEM_HOLDERS: Array<{ emblem: string; units: string[] }> = [
   { emblem: "Sprykin Emblem", units: ["Teemo"] },
 ];
 
+/** Usual artifact holders on these boards. Not live armory stats. */
+export const ARTIFACT_HOLDERS: Array<{ artifact: string; units: string[] }> = [
+  { artifact: "Fishbones", units: ["Sivir", "Draven", "Nidalee", "Aphelios"] },
+  { artifact: "Horizon Focus", units: ["Soraka", "Zyra", "Cassiopeia", "Ahri"] },
+  { artifact: "Lich Bane", units: ["Soraka", "Zyra", "Kayle", "Ahri"] },
+  { artifact: "Mittens", units: ["Malphite", "Master Yi", "Warwick"] },
+  { artifact: "Dawncore", units: ["Cassiopeia", "Soraka", "Karma"] },
+  { artifact: "Death's Defiance", units: ["Warwick", "Master Yi", "Rengar"] },
+  { artifact: "Gold Collector", units: ["Draven", "Sivir", "Nidalee"] },
+  { artifact: "Rapid Firecannon", units: ["Sivir", "Draven", "Caitlyn", "Xayah"] },
+  { artifact: "Flickerblades", units: ["Kayle", "Draven", "Xayah"] },
+  { artifact: "Statikk Shiv", units: ["Kayle", "Cassiopeia"] },
+  { artifact: "Titanic Hydra", units: ["Malphite", "Ornn", "Maokai"] },
+  { artifact: "The Indomitable", units: ["Malphite", "Ornn", "Rammus"] },
+  { artifact: "Wit's End", units: ["Kayle", "Master Yi"] },
+  { artifact: "Zhonya's Paradox", units: ["Soraka", "Zyra"] },
+  { artifact: "Silvermere Dawn", units: ["Malphite", "Ornn"] },
+  { artifact: "Manazane", units: ["Cassiopeia", "Azir"] },
+  { artifact: "Luden's Tempest", units: ["Zyra", "Ahri"] },
+  { artifact: "Blighting Jewel", units: ["Zyra", "Cassiopeia"] },
+  { artifact: "Infinity Force", units: ["Master Yi", "Rengar"] },
+  { artifact: "Hullcrusher", units: ["Warwick", "Rek'Sai"] },
+  { artifact: "Hellfire Hatchet", units: ["Warwick", "Rengar"] },
+  { artifact: "Aegis of Dawn", units: ["Malphite", "Leona"] },
+  { artifact: "Lightshield Crest", units: ["Soraka", "Rakan"] },
+  { artifact: "Forbidden Idol", units: ["Soraka", "Karma"] },
+  { artifact: "Gambler's Blade", units: ["Nidalee", "Sivir"] },
+  { artifact: "Void Gauntlet", units: ["Fiddlesticks", "Zyra"] },
+  { artifact: "Seeker's Armguard", units: ["Elise", "Rammus"] },
+  { artifact: "Mogul's Mail", units: ["Ornn", "Maokai"] },
+  { artifact: "Eternal Pact", units: ["Elder Dragon", "Malphite"] },
+];
+
 export function notebookFromMeta(comp: ResolvedMetaComp, pinned = true): Comp {
   const now = Date.now();
   const units: CompUnit[] = comp.units.map((unit) => ({

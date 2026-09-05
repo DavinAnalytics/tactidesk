@@ -9,6 +9,7 @@ describe("set snapshot", () => {
     expect(setData.champions.length).toBeGreaterThan(50);
     expect(setData.traits.length).toBeGreaterThan(20);
     expect(setData.items.length).toBeGreaterThan(50);
+    expect(setData.items.filter((item) => item.kind === "artifact").length).toBeGreaterThan(20);
     expect(setData.augments.length).toBeGreaterThan(100);
     expect(championById.get("DA_18_Ornn")?.name).toBe("Ornn");
   });

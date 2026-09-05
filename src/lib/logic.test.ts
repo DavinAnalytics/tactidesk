@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildRecipeMap, combineItems, pairKey } from "./items";
 import { matchesQuery, substitutePlaceholders } from "./text";
-import { addUnit, createComp, importComps, upsertComp } from "./storage";
+import { addUnit, createComp, importComps, removeUnit, upsertComp } from "./storage";
 import type { Item } from "../data/types";
 
 const items: Item[] = [
@@ -62,6 +62,7 @@ describe("comp notebook", () => {
     const again = addUnit(withUnit, "DA_18_Ornn");
     expect(withUnit.units).toHaveLength(1);
     expect(again.units).toHaveLength(1);
+    expect(removeUnit(withUnit, "DA_18_Ornn").units).toHaveLength(0);
     const saved = upsertComp([], withUnit);
     expect(saved[0].name).toBe("Riftbeast");
     const renamed = upsertComp(saved, { ...saved[0], name: "Riftbeast notes" });

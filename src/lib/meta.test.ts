@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { ARTIFACT_HOLDERS } from "../data/meta";
 import { findChampion, findItem } from "./lookup";
-import { ITEM_GUIDE, META_COMPS, META_RESOLVE_ISSUES, isReroll, threeStarNames } from "./meta";
+import { ITEM_GUIDE, META_COMPS, META_RESOLVE_ISSUES, guideForChampion, isReroll, threeStarNames } from "./meta";
 
 describe("meta snapshot", () => {
   it("resolves every champion and item name", () => {
@@ -34,5 +35,22 @@ describe("meta snapshot", () => {
     expect(threeStarNames(kayle!)).toEqual(expect.arrayContaining(["Kayle", "Xayah", "Ornn"]));
     const primal = META_COMPS.find((comp) => comp.id === "primal-malphite");
     expect(threeStarNames(primal!)).toEqual([]);
+  });
+
+  it("lists artifacts and unit recommendations", () => {
+    expect(ITEM_GUIDE.some((row) => row.kind === "artifact")).toBe(true);
+    expect(findItem("Fishbones")?.kind).toBe("artifact");
+    for (const row of ARTIFACT_HOLDERS) {
+      expect(findItem(row.artifact)?.kind).toBe("artifact");
+      for (const name of row.units) {
+        expect(findChampion(name)?.name).toBe(name);
+      }
+    }
+    const nidalee = findChampion("Nidalee");
+    const guide = guideForChampion(nidalee!.id);
+    expect(guide.items.map((item) => item.name)).toEqual(expect.arrayContaining(["Infinity Edge"]));
+    expect(guide.artifacts.length).toBeGreaterThan(0);
+    expect(guide.artifacts.length).toBeLessThanOrEqual(3);
+    expect(guide.comps.map((comp) => comp.name)).toEqual(expect.arrayContaining(["Primal Malphite"]));
   });
 });

@@ -88,6 +88,13 @@ button:hover {
   color: var(--muted);
 }
 
+.ver {
+  margin-left: 0.3rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
 .mark {
   width: 32px;
   height: 32px;
@@ -535,9 +542,93 @@ em {
 }
 
 .pin-unit {
+  position: relative;
   display: grid;
   justify-items: center;
   gap: 0.15rem;
+}
+
+.pin-unit-btn {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+}
+
+.pin-unit-btn.on {
+  border-color: var(--gold);
+  border-radius: 10px;
+  padding: 0.15rem;
+}
+
+.pin-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #1a2620;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.pin-expand {
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rec-block {
+  margin-top: 0.45rem;
+}
+
+.rec-block h4 {
+  margin: 0 0 0.25rem;
+}
+
+.rec-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.rec-item {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  width: 4.4rem;
+}
+
+.rec-item span {
+  font-size: 0.62rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--muted);
+}
+
+.comp-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.guide-block.on {
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  background: #101814;
+}
+
+.guide-block .guide-row {
+  width: 100%;
+}
+
+.guide-detail {
+  padding: 0 0.55rem 0.55rem;
 }
 
 .star-wrap {

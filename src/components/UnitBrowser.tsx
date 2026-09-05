@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import type { Champion } from "../data/types";
 import { setData } from "../data/catalog";
+import { guideForChampion } from "../lib/meta";
 import { formatRole, matchesQuery } from "../lib/text";
 import { Icon } from "./Icon";
+import { RecRow } from "./RecRow";
 import { SearchBox } from "./SearchBox";
 
 type Props = {
@@ -20,6 +22,8 @@ export function UnitBrowser({ onAddToBoard }: Props) {
       return matchesQuery(query, champ.name, champ.role, ...champ.traits);
     });
   }, [query, cost]);
+
+  const guide = selected ? guideForChampion(selected.id) : null;
 
   return (
     <div className="split">
@@ -49,7 +53,6 @@ export function UnitBrowser({ onAddToBoard }: Props) {
               key={champ.id}
               className={selected?.id === champ.id ? "unit on" : "unit"}
               onClick={() => setSelected(champ)}
-              onDoubleClick={() => onAddToBoard?.(champ.id)}
             >
               <Icon src={champ.icon} alt={champ.name} cost={champ.cost} size={48} />
               <span className="unit-name">{champ.name}</span>
@@ -58,7 +61,7 @@ export function UnitBrowser({ onAddToBoard }: Props) {
         </div>
       </div>
       <aside className="detail">
-        {selected ? (
+        {selected && guide ? (
           <>
             <div className="detail-head">
               <Icon src={selected.splash} alt={selected.name} cost={selected.cost} size={72} />
@@ -76,12 +79,23 @@ export function UnitBrowser({ onAddToBoard }: Props) {
                 </div>
               </div>
             </div>
-            {selected.ability.name ? (
-              <section>
-                <h4>{selected.ability.name}</h4>
-                <p>{selected.ability.text}</p>
-              </section>
-            ) : null}
+            <RecRow title="Best items" items={guide.items} />
+            <RecRow title="Best emblems" items={guide.emblems} />
+            <RecRow title="Best artifacts" items={guide.artifacts} />
+            <section className="rec-block">
+              <h4>Best comps</h4>
+              {guide.comps.length ? (
+                <div className="comp-pills">
+                  {guide.comps.map((comp) => (
+                    <span key={comp.id} className="pill">
+                      {comp.tier} · {comp.name}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="muted">Not on a pinned meta board</p>
+              )}
+            </section>
             {onAddToBoard ? (
               <button type="button" className="primary" onClick={() => onAddToBoard(selected.id)}>
                 Add to open board
@@ -89,7 +103,7 @@ export function UnitBrowser({ onAddToBoard }: Props) {
             ) : null}
           </>
         ) : (
-          <p className="muted">Select a unit. Double-click to drop it on the open board.</p>
+          <p className="muted">Select a unit to see items, emblems, artifacts, and comps.</p>
         )}
       </aside>
     </div>
