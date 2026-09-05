@@ -2,6 +2,7 @@ const { app, BrowserWindow, globalShortcut, ipcMain } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const { setupAutoUpdater } = require("./updater.cjs");
+const { concealBrowserWindow, showBrowserWindow, toggleOverlayVisibility } = require("./overlay-window.cjs");
 
 const isDev = !app.isPackaged;
 let win;
@@ -24,6 +25,9 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     resizable: true,
+    minimizable: true,
+    closable: true,
+    skipTaskbar: false,
     hasShadow: false,
     autoHideMenuBar: true,
     backgroundColor: "#00000000",
@@ -47,10 +51,7 @@ function createWindow() {
 }
 
 function showWindow() {
-  if (!win) return;
-  if (win.isMinimized()) win.restore();
-  win.show();
-  win.focus();
+  showBrowserWindow(win);
 }
 
 const gotLock = app.requestSingleInstanceLock();
@@ -62,9 +63,7 @@ if (!gotLock) {
   app.whenReady().then(() => {
     createWindow();
     setupAutoUpdater({ app, ipcMain, getWindow: () => win });
-    globalShortcut.register("CommandOrControl+Shift+T", () => {
-      win?.webContents.send("tactidesk:toggle");
-    });
+    globalShortcut.register("CommandOrControl+Shift+T", () => toggleOverlayVisibility(win));
   });
 }
 
@@ -80,4 +79,12 @@ ipcMain.handle("tactidesk:alwaysOnTop", () => {
 
 ipcMain.handle("tactidesk:ignoreMouse", (_event, ignore) => {
   win?.setIgnoreMouseEvents(Boolean(ignore), { forward: true });
+});
+
+ipcMain.handle("tactidesk:minimize", () => {
+  concealBrowserWindow(win);
+});
+
+ipcMain.handle("tactidesk:quit", () => {
+  app.quit();
 });

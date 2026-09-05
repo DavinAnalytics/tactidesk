@@ -754,16 +754,13 @@ em {
 }
 
 
-.peek {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: #1a2a20;
-  color: var(--gold);
-  font-weight: 700;
+.title-actions .quit {
+  color: var(--danger);
+  border-color: rgba(227, 107, 107, 0.35);
+}
+
+.title-actions .quit:hover {
+  border-color: var(--danger);
 }
 
 @media (max-width: 720px) {

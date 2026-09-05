@@ -17,6 +17,7 @@ describe("Windows installer packaging", () => {
     expect(existsSync(resolve(root, "build/icon.png"))).toBe(true);
     expect(existsSync(resolve(root, "build/icon.ico"))).toBe(true);
     expect(existsSync(resolve(root, "electron/updater.cjs"))).toBe(true);
+    expect(existsSync(resolve(root, "electron/overlay-window.cjs"))).toBe(true);
     expect(existsSync(resolve(root, "scripts/publish-win-release.sh"))).toBe(true);
   });
 

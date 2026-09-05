@@ -6,7 +6,8 @@ interface Window {
     toggleAlwaysOnTop: () => Promise<boolean>;
     setIgnoreMouse: (ignore: boolean) => Promise<void>;
     installUpdate: () => Promise<void>;
-    onToggleOverlay: (handler: () => void) => () => void;
+    minimize: () => Promise<void>;
+    quit: () => Promise<void>;
     onUpdateStatus: (handler: (status: import("./lib/updates").UpdateStatus) => void) => () => void;
   };
 }

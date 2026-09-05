@@ -5,11 +5,8 @@ contextBridge.exposeInMainWorld("tactidesk", {
   toggleAlwaysOnTop: () => ipcRenderer.invoke("tactidesk:alwaysOnTop"),
   setIgnoreMouse: (ignore) => ipcRenderer.invoke("tactidesk:ignoreMouse", ignore),
   installUpdate: () => ipcRenderer.invoke("tactidesk:installUpdate"),
-  onToggleOverlay: (handler) => {
-    const listener = () => handler();
-    ipcRenderer.on("tactidesk:toggle", listener);
-    return () => ipcRenderer.removeListener("tactidesk:toggle", listener);
-  },
+  minimize: () => ipcRenderer.invoke("tactidesk:minimize"),
+  quit: () => ipcRenderer.invoke("tactidesk:quit"),
   onUpdateStatus: (handler) => {
     const listener = (_event, status) => handler(status);
     ipcRenderer.on("tactidesk:update", listener);
