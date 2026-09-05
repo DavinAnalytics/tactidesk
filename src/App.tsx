@@ -23,6 +23,8 @@ import { OddsTable } from "./components/OddsTable";
 import { PinStrip } from "./components/PinStrip";
 import { TraitBrowser } from "./components/TraitBrowser";
 import { UnitBrowser } from "./components/UnitBrowser";
+import { UpdateBanner } from "./components/UpdateBanner";
+import { previewStatusFromQuery, type UpdateStatus } from "./lib/updates";
 
 const TABS: Array<{ id: OverlayTab; label: string }> = [
   { id: "board", label: "Board" },
@@ -41,6 +43,9 @@ export function App() {
   const [settings, setSettings] = useState(() => loadSettings());
   const [hidden, setHidden] = useState(false);
   const [status, setStatus] = useState("");
+  const [update, setUpdate] = useState<UpdateStatus | null>(() =>
+    previewStatusFromQuery(window.location.search),
+  );
 
   useEffect(() => saveComps(comps), [comps]);
   useEffect(() => saveAugmentNotes(notes), [notes]);
@@ -54,10 +59,12 @@ export function App() {
       }
     };
     window.addEventListener("keydown", onKey);
-    const off = window.tactidesk?.onToggleOverlay(() => setHidden((value) => !value));
+    const offToggle = window.tactidesk?.onToggleOverlay(() => setHidden((value) => !value));
+    const offUpdate = window.tactidesk?.onUpdateStatus((next) => setUpdate(next));
     return () => {
       window.removeEventListener("keydown", onKey);
-      off?.();
+      offToggle?.();
+      offUpdate?.();
     };
   }, []);
 
@@ -137,6 +144,19 @@ export function App() {
           </button>
         </div>
       </header>
+
+      {update ? (
+        <UpdateBanner
+          status={update}
+          onInstall={() => {
+            void window.tactidesk?.installUpdate();
+          }}
+          onSaveToken={(token) => {
+            void window.tactidesk?.saveUpdaterToken(token);
+            flash("Saved GitHub token");
+          }}
+        />
+      ) : null}
 
       <nav className="tabs">
         {TABS.map((entry) => (

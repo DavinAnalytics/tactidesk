@@ -632,6 +632,49 @@ em {
   font-size: 0.8rem;
 }
 
+.update-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0.7rem 0.45rem;
+  padding: 0.4rem 0.55rem;
+  background: #243528;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--moss);
+  font-size: 0.8rem;
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.update-banner.ready,
+.update-banner.needsToken {
+  color: var(--ink);
+}
+
+.update-banner.error {
+  color: var(--danger);
+}
+
+.update-token {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  min-width: min(100%, 16rem);
+}
+
+.update-token input {
+  flex: 1;
+  min-width: 0;
+  background: #101814;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  outline: none;
+}
+
 .peek {
   position: fixed;
   top: 12px;

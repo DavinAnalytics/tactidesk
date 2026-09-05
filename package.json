@@ -1,7 +1,7 @@
 {
   "name": "tactidesk",
   "productName": "TactiDesk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Personal TFT overlay: static Set 18 reference, your comps, no ads.",
   "author": "DavinAnalytics",
@@ -28,6 +28,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "electron-updater": "^6.8.9",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
