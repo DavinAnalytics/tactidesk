@@ -4,13 +4,22 @@
   "version": "0.1.0",
   "private": true,
   "description": "Personal TFT overlay: static Set 18 reference, your comps, no ads.",
+  "author": "DavinAnalytics",
+  "homepage": "https://github.com/DavinAnalytics/tactidesk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DavinAnalytics/tactidesk.git"
+  },
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
     "extract": "node scripts/extract-set.mjs",
+    "icon": "node scripts/generate-icon.mjs",
     "dev": "vite",
     "dev:electron": "concurrently -k \"vite\" \"wait-on http://127.0.0.1:5173 && electron .\"",
     "build": "tsc --noEmit && vite build",
+    "dist": "npm run build && electron-builder --publish never",
+    "dist:win": "npm run build && electron-builder --win nsis --publish never",
     "preview": "vite preview --port 4173 --strictPort",
     "test": "vitest run",
     "start": "electron ."
@@ -28,6 +37,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "concurrently": "^10.0.5",
     "electron": "^44.1.1",
+    "electron-builder": "^26.15.3",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
     "vitest": "^4.1.11",

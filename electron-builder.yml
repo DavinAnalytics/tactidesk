@@ -1,0 +1,36 @@
+appId: com.davinanalytics.tactidesk
+productName: TactiDesk
+copyright: Copyright © DavinAnalytics
+artifactName: TactiDesk-Setup-${version}.${ext}
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - electron/**/*
+  - build/icon.png
+  - build/icon.ico
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+
+nsis:
+  oneClick: true
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: TactiDesk
+  uninstallDisplayName: TactiDesk
+  deleteAppDataOnUninstall: false
+  runAfterFinish: true
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+  displayLanguageSelector: false
