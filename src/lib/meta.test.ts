@@ -38,7 +38,7 @@ describe("meta snapshot", () => {
     expect(threeStarNames(primal!)).toEqual([]);
   });
 
-  it("lists artifacts without using guessed holders", () => {
+  it("lists an artifact holder for every artifact, including usual notes when n < 3", () => {
     expect(ITEM_GUIDE.some((row) => row.kind === "artifact")).toBe(true);
     expect(findItem("Fishbones")?.kind).toBe("artifact");
     for (const row of ARTIFACT_HOLDERS) {
@@ -47,6 +47,23 @@ describe("meta snapshot", () => {
         expect(findChampion(name)?.name).toBe(name);
       }
     }
+    const artifacts = ITEM_GUIDE.filter((row) => row.kind === "artifact");
+    expect(artifacts.length).toBeGreaterThanOrEqual(20);
+    for (const row of artifacts) {
+      expect(row.holders.length, row.name).toBeGreaterThanOrEqual(1);
+    }
+
+    const gamblers = ITEM_GUIDE.find((row) => row.name === "Gambler's Blade");
+    expect(gamblers?.holdersFrom).toBe("notes");
+    expect(gamblers?.holders.map((holder) => holder.name)).toEqual(expect.arrayContaining(["Aphelios"]));
+    expect(gamblers?.holders.map((holder) => holder.name)).toContain("Xayah");
+    expect(gamblers?.holders.every((holder) => holder.n == null)).toBe(true);
+
+    const pact = ITEM_GUIDE.find((row) => row.name === "Eternal Pact");
+    expect(pact?.holdersFrom).toBe("riot");
+    expect(pact?.holders.map((holder) => holder.name)).toEqual(expect.arrayContaining(["Veigar"]));
+    expect(pact?.holders.find((holder) => holder.name === "Veigar")?.n).toBeGreaterThanOrEqual(3);
+
     const nidalee = findChampion("Nidalee");
     const guide = guideForChampion(nidalee!.id);
     expect(guide.itemsFrom).toBe("riot");
@@ -95,7 +112,7 @@ describe("meta snapshot", () => {
             {
               itemId: findItem("Horizon Focus")!.id,
               kind: "artifact",
-              n: 4,
+              n: 2,
               avgPlace: 5.8,
               delta: 1.7,
             },

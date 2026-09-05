@@ -39,6 +39,7 @@ export type ItemHolder = {
   n?: number;
   avgPlace?: number;
   delta?: number;
+  source?: "riot" | "board" | "notes";
 };
 
 /** Curated Set 18 snapshot (patch 18.1d). Not live match stats. */
@@ -305,12 +306,11 @@ export const EMBLEM_HOLDERS: Array<{ emblem: string; units: string[] }> = [
 ];
 
 /**
- * Historical notes only — the overlay does not show these guesses.
- * Ladder pairs come from src/data/stats.json after `npm run stats`.
- * Horizon Focus only belongs on units that stun; do not put it on Zyra.
+ * Usual artifact holders when the NA snapshot has fewer than ARTIFACT_MIN_SAMPLE games.
+ * Ladder pairs still win when n is high enough. Horizon Focus only belongs on units that stun.
  */
 export const ARTIFACT_HOLDERS: Array<{ artifact: string; units: string[] }> = [
-  { artifact: "Fishbones", units: ["Sivir", "Draven", "Aphelios", "Caitlyn"] },
+  { artifact: "Fishbones", units: ["Aphelios", "Sivir", "Draven", "Caitlyn"] },
   { artifact: "Horizon Focus", units: ["Kennen", "Sejuani", "Rammus", "Amumu", "Leona", "Lillia"] },
   { artifact: "Lich Bane", units: ["Kayle", "Ahri", "Cassiopeia"] },
   { artifact: "Mittens", units: ["Master Yi", "Warwick", "Rengar"] },
@@ -332,13 +332,14 @@ export const ARTIFACT_HOLDERS: Array<{ artifact: string; units: string[] }> = [
   { artifact: "Hullcrusher", units: ["Warwick", "Rek'Sai"] },
   { artifact: "Hellfire Hatchet", units: ["Warwick", "Rengar"] },
   { artifact: "Aegis of Dawn", units: ["Malphite", "Leona", "Ornn"] },
+  { artifact: "Aegis of Dusk", units: ["Ornn", "Malphite"] },
   { artifact: "Lightshield Crest", units: ["Soraka", "Rakan"] },
   { artifact: "Forbidden Idol", units: ["Soraka", "Karma"] },
-  { artifact: "Gambler's Blade", units: ["Nidalee", "Sivir", "Draven"] },
+  { artifact: "Gambler's Blade", units: ["Aphelios", "Xayah", "Kayle", "Draven"] },
   { artifact: "Void Gauntlet", units: ["Fiddlesticks", "Zyra"] },
   { artifact: "Seeker's Armguard", units: ["Elise", "Rammus"] },
   { artifact: "Mogul's Mail", units: ["Ornn", "Maokai"] },
-  { artifact: "Eternal Pact", units: ["Elder Dragon", "Malphite"] },
+  { artifact: "Eternal Pact", units: ["Veigar", "Soraka"] },
 ];
 
 export function notebookFromMeta(comp: ResolvedMetaComp, pinned = true): Comp {

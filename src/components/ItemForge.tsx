@@ -16,7 +16,7 @@ type Props = {
 export function ItemForge({ onPickItem }: Props) {
   const [mode, setMode] = useState<"holders" | "forge">("holders");
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const components = useMemo(() => componentsOf(setData.items), []);
   const [left, setLeft] = useState<string | null>(null);
   const [right, setRight] = useState<string | null>(null);
@@ -27,7 +27,7 @@ export function ItemForge({ onPickItem }: Props) {
     );
   }, [query]);
 
-  const selected = ITEM_GUIDE.find((row) => row.itemId === selectedId) || rows[0];
+  const selected = selectedId ? ITEM_GUIDE.find((row) => row.itemId === selectedId) : undefined;
   const selectedItem = selected ? itemById.get(selected.itemId) : undefined;
   const crafted = left && right ? combineItems(setData.items, left, right) : undefined;
 
@@ -58,14 +58,15 @@ export function ItemForge({ onPickItem }: Props) {
           </div>
           <div className="item-guide">
             {rows.map((row) => {
-              const open = selected?.itemId === row.itemId;
+              const open = selectedId === row.itemId;
               const openItem = open ? selectedItem : undefined;
               return (
                 <div key={row.itemId} className={open ? "guide-block on" : "guide-block"}>
                   <button
                     type="button"
                     className={open ? "guide-row on" : "guide-row"}
-                    onClick={() => setSelectedId(open ? "" : row.itemId)}
+                    aria-expanded={open}
+                    onClick={() => setSelectedId(open ? null : row.itemId)}
                   >
                     <Icon src={row.icon} alt={row.name} size={32} />
                     <span className="guide-name">
@@ -87,7 +88,13 @@ export function ItemForge({ onPickItem }: Props) {
                           {itemById.get(openItem.composition[1])?.name}
                         </p>
                       ) : null}
-                      <h4>{row.holders.some((holder) => holder.n != null) ? `${platformLabel()} ladder holders` : "Holders on our boards"}</h4>
+                      <h4>
+                        {row.holdersFrom === "riot"
+                          ? `${platformLabel()} ladder holders`
+                          : row.holdersFrom === "notes"
+                            ? "Usual holders"
+                            : "Holders on our boards"}
+                      </h4>
                       {row.holders.length ? (
                         <div className="holder-list">
                           {row.holders.map((holder) => (
@@ -101,7 +108,7 @@ export function ItemForge({ onPickItem }: Props) {
                           ))}
                         </div>
                       ) : (
-                        <p className="muted">No holders on our boards yet</p>
+                        <p className="muted">No holders yet</p>
                       )}
                       {onPickItem ? (
                         <button type="button" className="primary" onClick={() => onPickItem(row.itemId)}>

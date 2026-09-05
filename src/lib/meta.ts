@@ -1,5 +1,6 @@
 import { championById, itemById, setData, traitByName } from "../data/catalog";
 import {
+  ARTIFACT_HOLDERS,
   META_PATCH,
   RAW_META_COMPS,
   notebookFromMeta,
@@ -8,7 +9,7 @@ import {
   type ResolvedMetaComp,
   type ResolvedMetaUnit,
 } from "../data/meta";
-import { findChampion, findItem } from "./lookup";
+import { findChampion, findItem, keyName } from "./lookup";
 import {
   STATS,
   formatItemStat,
@@ -22,13 +23,32 @@ export type { ItemHolder, ResolvedMetaComp, MetaTier };
 
 export type ResolveIssue = { comp: string; field: "champion" | "item"; name: string };
 
+export type GuideSource = "riot" | "board" | "notes";
+
 export type ItemGuideRow = {
   itemId: string;
   name: string;
   kind: string;
   icon: string;
+  holdersFrom: GuideSource;
   holders: Array<ItemHolder & { name: string; icon: string; cost: number }>;
 };
+
+const NOTE_HOLDER_LIMIT = 2;
+
+function noteHoldersForArtifact(itemName: string): ItemHolder[] {
+  const wanted = keyName(itemName);
+  const row = ARTIFACT_HOLDERS.find((entry) => keyName(entry.artifact) === wanted);
+  if (!row) return [];
+  const holders: ItemHolder[] = [];
+  for (const name of row.units) {
+    const champ = findChampion(name);
+    if (!champ) continue;
+    holders.push({ championId: champ.id, comps: [], source: "notes" });
+    if (holders.length >= NOTE_HOLDER_LIMIT) break;
+  }
+  return holders;
+}
 
 function resolveUnit(
   compId: string,
@@ -110,7 +130,7 @@ export function holdersByItem(stats: StatsSnapshot = STATS): Map<string, ItemHol
     if (existing) {
       if (!existing.comps.includes(compName)) existing.comps.push(compName);
     } else {
-      list.push({ championId, comps: [compName] });
+      list.push({ championId, comps: [compName], source: "board" });
     }
     map.set(itemId, list);
   }
@@ -133,8 +153,16 @@ export function holdersByItem(stats: StatsSnapshot = STATS): Map<string, ItemHol
         n: holder.n,
         avgPlace: holder.avgPlace,
         delta: holder.delta,
+        source: "riot" as const,
       })),
     );
+  }
+
+  for (const item of setData.items) {
+    if (item.kind !== "artifact") continue;
+    if (map.get(item.id)?.length) continue;
+    const notes = noteHoldersForArtifact(item.name);
+    if (notes.length) map.set(item.id, notes);
   }
 
   for (const list of map.values()) {
@@ -159,6 +187,7 @@ export function itemGuideRows(stats: StatsSnapshot = STATS): ItemGuideRow[] {
       name: item.name,
       kind: item.kind,
       icon: item.icon,
+      holdersFrom: holders[0]?.source ?? "board",
       holders: holders.map((holder) => {
         const champ = championById.get(holder.championId);
         return {
@@ -179,6 +208,7 @@ export function itemGuideRows(stats: StatsSnapshot = STATS): ItemGuideRow[] {
       name: item.name,
       kind: item.kind,
       icon: item.icon,
+      holdersFrom: "board",
       holders: [],
     });
   }
@@ -203,7 +233,6 @@ export type UnitGuideItem = {
   delta?: number;
 };
 export type UnitGuideComp = { id: string; name: string; tier: MetaTier; style: string };
-export type GuideSource = "riot" | "board";
 export type UnitGuide = {
   items: UnitGuideItem[];
   emblems: UnitGuideItem[];

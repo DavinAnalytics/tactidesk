@@ -51,6 +51,15 @@ export type StatHolder = {
 
 export const STATS = statsSnapshot as StatsSnapshot;
 
+/** Completed items and emblems stay at the snapshot bar (20). Artifacts almost never reach that in a 271-game slice. */
+export const DEFAULT_MIN_SAMPLE = 20;
+export const ARTIFACT_MIN_SAMPLE = 3;
+
+export function minSampleForKind(kind: string, stats: StatsSnapshot = STATS): number {
+  if (kind === "artifact") return ARTIFACT_MIN_SAMPLE;
+  return stats.minSample ?? DEFAULT_MIN_SAMPLE;
+}
+
 export function hasLadderStats(stats: StatsSnapshot = STATS): boolean {
   return stats.matches > 0 && stats.units.length > 0;
 }
@@ -89,7 +98,7 @@ export function riotItemsForChampion(
 ): StatGuideItem[] {
   const unit = unitRow(stats, championId);
   if (!unit) return [];
-  const minSample = stats.minSample ?? 20;
+  const minSample = minSampleForKind(kind, stats);
   const ranked = unit.items
     .filter((item) => item.kind === kind && item.n >= minSample)
     .sort((a, b) => a.delta - b.delta || b.n - a.n || a.itemId.localeCompare(b.itemId))
@@ -112,7 +121,8 @@ export function riotItemsForChampion(
 }
 
 export function riotHoldersForItem(itemId: string, stats: StatsSnapshot = STATS): StatHolder[] {
-  const minSample = stats.minSample ?? 20;
+  const catalogItem = itemById.get(itemId);
+  const minSample = minSampleForKind(catalogItem?.kind ?? "", stats);
   const holders: StatHolder[] = [];
   for (const unit of stats.units) {
     const item = unit.items.find((entry) => entry.itemId === itemId);
