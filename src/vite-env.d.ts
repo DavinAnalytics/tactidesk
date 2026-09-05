@@ -5,6 +5,8 @@ interface Window {
     isElectron: boolean;
     toggleAlwaysOnTop: () => Promise<boolean>;
     setIgnoreMouse: (ignore: boolean) => Promise<void>;
+    installUpdate: () => Promise<void>;
     onToggleOverlay: (handler: () => void) => () => void;
+    onUpdateStatus: (handler: (status: import("./lib/updates").UpdateStatus) => void) => () => void;
   };
 }

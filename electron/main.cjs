@@ -1,6 +1,7 @@
 const { app, BrowserWindow, globalShortcut, ipcMain } = require("electron");
 const fs = require("fs");
 const path = require("path");
+const { setupAutoUpdater } = require("./updater.cjs");
 
 const isDev = !app.isPackaged;
 let win;
@@ -60,6 +61,7 @@ if (!gotLock) {
 
   app.whenReady().then(() => {
     createWindow();
+    setupAutoUpdater({ app, ipcMain, getWindow: () => win });
     globalShortcut.register("CommandOrControl+Shift+T", () => {
       win?.webContents.send("tactidesk:toggle");
     });

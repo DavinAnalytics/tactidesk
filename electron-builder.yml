@@ -20,6 +20,12 @@ win:
         - x64
   icon: build/icon.ico
 
+publish:
+  provider: github
+  owner: DavinAnalytics
+  repo: tactidesk
+  releaseType: release
+
 nsis:
   oneClick: true
   perMachine: false

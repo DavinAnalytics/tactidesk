@@ -632,6 +632,32 @@ em {
   font-size: 0.8rem;
 }
 
+.update-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0.7rem 0.45rem;
+  padding: 0.4rem 0.55rem;
+  background: #243528;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--moss);
+  font-size: 0.8rem;
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.update-banner.ready {
+  color: var(--ink);
+}
+
+.update-banner.error {
+  color: var(--danger);
+}
+
+
 .peek {
   position: fixed;
   top: 12px;

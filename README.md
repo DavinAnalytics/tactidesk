@@ -18,6 +18,16 @@ Uninstall from Windows Settings → Apps, or from the Start Menu shortcut folder
 
 If a release is not up yet, open the [Windows installer workflow](https://github.com/DavinAnalytics/tactidesk/actions/workflows/windows-installer.yml), pick the latest successful run, and download the **TactiDesk-Windows-Setup** artifact.
 
+## Updates
+
+Installed copies check GitHub Releases on launch and every few hours. When a newer version is published, TactiDesk downloads it in the background. Click **Restart** when the banner says the update is ready, or just quit the app — it installs on exit. It will not force a restart during a match.
+
+The first setup file you already installed does not include this updater. Install **0.1.1 or newer** once. After that, you should not need to run a setup `.exe` again.
+
+The repository is public, so updates do not need a GitHub token.
+
+To ship a change to an already-installed copy: bump `version` in `package.json`, merge to `main`, and the Windows workflow publishes `v<version>`. Electron only updates when that version number goes up.
+
 ## What it is
 
 - Overlay or browser panel for **Set 18: Enchanted Wilds**
