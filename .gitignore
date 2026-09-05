@@ -7,3 +7,6 @@ release
 .vite
 coverage
 agent-tools
+.env
+.env.*
+!.env.example

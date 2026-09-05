@@ -36,6 +36,9 @@ export type ResolvedMetaComp = {
 export type ItemHolder = {
   championId: string;
   comps: string[];
+  n?: number;
+  avgPlace?: number;
+  delta?: number;
 };
 
 /** Curated Set 18 snapshot (patch 18.1d). Not live match stats. */
@@ -302,8 +305,9 @@ export const EMBLEM_HOLDERS: Array<{ emblem: string; units: string[] }> = [
 ];
 
 /**
- * Static artifact holders from the item text, not MetaTFT place/tier.
- * Horizon Focus only goes on units that stun.
+ * Historical notes only — the overlay does not show these guesses.
+ * Ladder pairs come from src/data/stats.json after `npm run stats`.
+ * Horizon Focus only belongs on units that stun; do not put it on Zyra.
  */
 export const ARTIFACT_HOLDERS: Array<{ artifact: string; units: string[] }> = [
   { artifact: "Fishbones", units: ["Sivir", "Draven", "Aphelios", "Caitlyn"] },

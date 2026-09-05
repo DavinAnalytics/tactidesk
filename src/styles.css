@@ -601,7 +601,7 @@ em {
   display: grid;
   justify-items: center;
   gap: 0.15rem;
-  width: 4.4rem;
+  width: 5.4rem;
 }
 
 .rec-item span {
@@ -609,6 +609,11 @@ em {
   line-height: 1.2;
   text-align: center;
   color: var(--muted);
+}
+
+.rec-item .rec-stat {
+  font-size: 0.54rem;
+  letter-spacing: -0.02em;
 }
 
 .comp-pills {
