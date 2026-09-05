@@ -79,11 +79,11 @@ export function UnitBrowser({ onAddToBoard }: Props) {
                 </div>
               </div>
             </div>
-            <RecRow title="Best items" items={guide.items} />
-            <RecRow title="Best emblems" items={guide.emblems} />
-            <RecRow title="Best artifacts" items={guide.artifacts} />
+            <RecRow title="Items on our boards" items={guide.items} />
+            <RecRow title="Usual emblems" items={guide.emblems} />
+            <RecRow title="Usual artifacts" items={guide.artifacts} empty="No static artifact note for this unit" />
             <section className="rec-block">
-              <h4>Best comps</h4>
+              <h4>Comps in this snapshot</h4>
               {guide.comps.length ? (
                 <div className="comp-pills">
                   {guide.comps.map((comp) => (

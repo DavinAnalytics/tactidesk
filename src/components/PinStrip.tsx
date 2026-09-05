@@ -83,8 +83,8 @@ function renderGuide(championId: string) {
   return (
     <div className="pin-expand">
       <strong>{champ?.name || "Unit"}</strong>
-      <RecRow title="Top items" items={guide.items} />
-      <RecRow title="Top artifacts" items={guide.artifacts} />
+      <RecRow title="Items on our boards" items={guide.items} />
+      <RecRow title="Usual artifacts" items={guide.artifacts} empty="No static artifact note for this unit" />
     </div>
   );
 }

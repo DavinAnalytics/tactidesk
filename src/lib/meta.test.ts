@@ -52,5 +52,15 @@ describe("meta snapshot", () => {
     expect(guide.artifacts.length).toBeGreaterThan(0);
     expect(guide.artifacts.length).toBeLessThanOrEqual(3);
     expect(guide.comps.map((comp) => comp.name)).toEqual(expect.arrayContaining(["Primal Malphite"]));
+
+    const horizon = ARTIFACT_HOLDERS.find((row) => row.artifact === "Horizon Focus");
+    expect(horizon?.units).toEqual(expect.arrayContaining(["Kennen", "Sejuani", "Rammus"]));
+    expect(horizon?.units).not.toContain("Zyra");
+    expect(horizon?.units).not.toContain("Soraka");
+    const zyra = guideForChampion(findChampion("Zyra")!.id);
+    expect(zyra.artifacts.map((item) => item.name)).not.toContain("Horizon Focus");
+    expect(zyra.artifacts.map((item) => item.name)).toEqual(
+      expect.arrayContaining(["Luden's Tempest", "Blighting Jewel"]),
+    );
   });
 });
