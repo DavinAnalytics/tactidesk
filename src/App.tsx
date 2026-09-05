@@ -151,10 +151,6 @@ export function App() {
           onInstall={() => {
             void window.tactidesk?.installUpdate();
           }}
-          onSaveToken={(token) => {
-            void window.tactidesk?.saveUpdaterToken(token);
-            flash("Saved GitHub token");
-          }}
         />
       ) : null}
 

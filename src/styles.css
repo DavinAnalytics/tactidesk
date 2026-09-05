@@ -649,8 +649,7 @@ em {
   app-region: no-drag;
 }
 
-.update-banner.ready,
-.update-banner.needsToken {
+.update-banner.ready {
   color: var(--ink);
 }
 
@@ -658,22 +657,6 @@ em {
   color: var(--danger);
 }
 
-.update-token {
-  display: flex;
-  gap: 0.35rem;
-  align-items: center;
-  min-width: min(100%, 16rem);
-}
-
-.update-token input {
-  flex: 1;
-  min-width: 0;
-  background: #101814;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.25rem 0.5rem;
-  outline: none;
-}
 
 .peek {
   position: fixed;

@@ -13,7 +13,7 @@ describe("Windows installer packaging", () => {
     expect(config).toContain("createStartMenuShortcut: true");
     expect(config).toContain("runAfterFinish: true");
     expect(config).toContain("provider: github");
-    expect(config).toContain("private: true");
+    expect(config).not.toContain("private: true");
     expect(existsSync(resolve(root, "build/icon.png"))).toBe(true);
     expect(existsSync(resolve(root, "build/icon.ico"))).toBe(true);
     expect(existsSync(resolve(root, "electron/updater.cjs"))).toBe(true);

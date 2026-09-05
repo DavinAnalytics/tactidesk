@@ -25,7 +25,6 @@ publish:
   owner: DavinAnalytics
   repo: tactidesk
   releaseType: release
-  private: true
 
 nsis:
   oneClick: true

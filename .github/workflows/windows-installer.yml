@@ -22,15 +22,6 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Embed updater token for private releases
-        env:
-          UPDATER_GITHUB_TOKEN: ${{ secrets.UPDATER_GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          if [ -n "${UPDATER_GITHUB_TOKEN}" ]; then
-            printf '%s' "$UPDATER_GITHUB_TOKEN" > electron/updater.token
-          fi
-
       - name: Install dependencies
         run: npm ci
 

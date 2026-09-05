@@ -24,10 +24,7 @@ Installed copies check GitHub Releases on launch and every few hours. When a new
 
 The first setup file you already installed does not include this updater. Install **0.1.1 or newer** once. After that, you should not need to run a setup `.exe` again.
 
-This repository is private, so the updater needs a GitHub token with read access to releases:
-
-1. Create a fine-grained personal access token with **Contents: Read** on `DavinAnalytics/tactidesk`.
-2. Add it as the repo secret `UPDATER_GITHUB_TOKEN` so new installers embed it, **or** paste it once in the overlay banner.
+The repository is public, so updates do not need a GitHub token.
 
 To ship a change to an already-installed copy: bump `version` in `package.json`, merge to `main`, and the Windows workflow publishes `v<version>`. Electron only updates when that version number goes up.
 
