@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ITEM_GUIDE } from "../lib/meta";
+import { platformLabel } from "../lib/riot-stats";
 import { itemById } from "../data/catalog";
 import { combineItems, componentsOf } from "../lib/items";
 import { setData } from "../data/catalog";
@@ -86,7 +87,7 @@ export function ItemForge({ onPickItem }: Props) {
                           {itemById.get(openItem.composition[1])?.name}
                         </p>
                       ) : null}
-                      <h4>Best on</h4>
+                      <h4>{row.holders.some((holder) => holder.n != null) ? `${platformLabel()} ladder holders` : "Holders on our boards"}</h4>
                       {row.holders.length ? (
                         <div className="holder-list">
                           {row.holders.map((holder) => (
@@ -100,7 +101,7 @@ export function ItemForge({ onPickItem }: Props) {
                           ))}
                         </div>
                       ) : (
-                        <p className="muted">No pinned holders yet</p>
+                        <p className="muted">No holders on our boards yet</p>
                       )}
                       {onPickItem ? (
                         <button type="button" className="primary" onClick={() => onPickItem(row.itemId)}>

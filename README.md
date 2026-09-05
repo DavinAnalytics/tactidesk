@@ -32,7 +32,7 @@ To ship a change to an already-installed copy: bump `version` in `package.json`,
 
 - Overlay or browser panel for **Set 18: Enchanted Wilds**
 - Meta comps tier list (S–C) you can pin, plus your own boards
-- Items page with usual holders for completed items, artifacts, and emblems
+- Items page with holders from your curated boards, plus NA ladder placement when `src/data/stats.json` has been refreshed from the Riot TFT Match API
 - Item forge (component + component)
 - Unit / trait / augment encyclopedia from [Community Dragon](https://www.communitydragon.org/)
 - Personal augment notes stored only on this machine
@@ -49,7 +49,7 @@ Riot’s TFT policy allows overlays that show **data available before the game**
 
 The Comps tab opens on a **patch 18.1d snapshot** of common ladder lines (Primal Malphite, Flora Malphite, Solar Kayle, and so on). It is a curated static list, not MetaTFT’s live table and not a scraped copy of their stats. Pin a board before the game; it does not update from the live match.
 
-The Items tab lists completed items with the units that take them on those boards. Click an item to see holders and which comps use that pairing.
+The Items tab lists completed items with the units that take them on those boards. After you refresh ladder stats, it shows who actually held the item in recent ranked games (`n`, average place, delta vs that unit’s baseline). It does not guess artifacts from item text.
 
 Play TFT in **borderless windowed**. A normal always-on-top window sits on top; it does not inject into the game.
 
@@ -83,8 +83,26 @@ npm run extract
 
 Boards export/import as JSON from the Comps tab.
 
+## Refresh NA ladder stats
+
+The overlay never calls Riot. A local script writes `src/data/stats.json`; the app just reads that file.
+
+Development keys last **24 hours**. Open [developer.riotgames.com](https://developer.riotgames.com/), regenerate the key on Getting Started (do not Register Product for this), then:
+
+```bash
+RIOT_API_KEY=RGAPI-... RIOT_PLATFORM=na1 npm run stats
+```
+
+Or copy `.env.example` to `.env` and put the key there. `.env` is gitignored.
+
+Defaults take Challenger + Grandmaster + Master, keep the top 35 by LP, and pull 12 recent match ids each. The script stays under the development-key budget (20 requests/s, 100 / 2 minutes) and honors `429 Retry-After`. A first useful NA pass is tens of minutes.
+
+Until that file has matches, Units and Board show items from the curated boards only — no guessed artifacts. After a refresh, pairs with `n ≥ 20` show as `n=412 · 3.94 · −0.21` (games, average place, delta vs that unit’s baseline). Negative delta is better.
+
+Do not put the key in the Electron app, GitHub Actions, or a commit. A production key + nightly Action can wait until you have one.
+
 ## Policy note
 
-Register a personal app on the [Riot Developer Portal](https://developer.riotgames.com/) if you ship this beyond your own machine.
+A development key is enough to refresh `stats.json` on your machine. Register a personal app on the [Riot Developer Portal](https://developer.riotgames.com/) if you want a production key for unattended jobs.
 
 TactiDesk isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends / Teamfight Tactics.

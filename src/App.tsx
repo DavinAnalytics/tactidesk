@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { setData } from "./data/catalog";
 import { META_PATCH, notebookFromMeta } from "./lib/meta";
+import { ladderCaption } from "./lib/riot-stats";
 import { APP_VERSION } from "./lib/version";
 import type { Comp, OverlayTab } from "./data/types";
 import type { ResolvedMetaComp } from "./lib/meta";
@@ -135,6 +136,7 @@ export function App() {
             </strong>
             <small>
               Set {setData.set} · {setData.name} · Patch {META_PATCH}
+              {ladderCaption() ? ` · ${ladderCaption()}` : ""}
             </small>
           </div>
         </div>

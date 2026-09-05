@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Comp } from "../data/types";
 import { championById, itemById } from "../data/catalog";
 import { guideForChampion } from "../lib/meta";
+import { platformLabel } from "../lib/riot-stats";
 import { Icon } from "./Icon";
 import { RecRow } from "./RecRow";
 
@@ -83,8 +84,19 @@ function renderGuide(championId: string) {
   return (
     <div className="pin-expand">
       <strong>{champ?.name || "Unit"}</strong>
-      <RecRow title="Items on our boards" items={guide.items} />
-      <RecRow title="Usual artifacts" items={guide.artifacts} empty="No static artifact note for this unit" />
+      <RecRow
+        title={guide.itemsFrom === "riot" ? `${platformLabel()} ladder items` : "Items on our boards"}
+        items={guide.items}
+      />
+      <RecRow
+        title={guide.artifactsFrom === "riot" ? `${platformLabel()} ladder artifacts` : "Artifacts"}
+        items={guide.artifacts}
+        empty={
+          guide.artifactsFrom === "riot"
+            ? "No artifact with enough games yet"
+            : "No ladder sample yet — boards only"
+        }
+      />
     </div>
   );
 }

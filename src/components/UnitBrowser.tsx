@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { Champion } from "../data/types";
 import { setData } from "../data/catalog";
 import { guideForChampion } from "../lib/meta";
+import { platformLabel } from "../lib/riot-stats";
 import { formatRole, matchesQuery } from "../lib/text";
 import { Icon } from "./Icon";
 import { RecRow } from "./RecRow";
@@ -79,9 +80,24 @@ export function UnitBrowser({ onAddToBoard }: Props) {
                 </div>
               </div>
             </div>
-            <RecRow title="Items on our boards" items={guide.items} />
-            <RecRow title="Usual emblems" items={guide.emblems} />
-            <RecRow title="Usual artifacts" items={guide.artifacts} empty="No static artifact note for this unit" />
+            <RecRow
+              title={guide.itemsFrom === "riot" ? `${platformLabel()} ladder items` : "Items on our boards"}
+              items={guide.items}
+            />
+            <RecRow
+              title={guide.emblemsFrom === "riot" ? `${platformLabel()} ladder emblems` : "Emblems"}
+              items={guide.emblems}
+              empty="None on our boards"
+            />
+            <RecRow
+              title={guide.artifactsFrom === "riot" ? `${platformLabel()} ladder artifacts` : "Artifacts"}
+              items={guide.artifacts}
+              empty={
+                guide.artifactsFrom === "riot"
+                  ? "No artifact with enough games yet"
+                  : "No ladder sample yet — boards only"
+              }
+            />
             <section className="rec-block">
               <h4>Comps in this snapshot</h4>
               {guide.comps.length ? (
@@ -103,7 +119,7 @@ export function UnitBrowser({ onAddToBoard }: Props) {
             ) : null}
           </>
         ) : (
-          <p className="muted">Select a unit to see items, emblems, artifacts, and comps.</p>
+          <p className="muted">Select a unit to see board items, ladder stats when present, and comps.</p>
         )}
       </aside>
     </div>
