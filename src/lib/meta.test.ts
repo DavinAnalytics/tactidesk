@@ -49,10 +49,10 @@ describe("meta snapshot", () => {
     }
     const nidalee = findChampion("Nidalee");
     const guide = guideForChampion(nidalee!.id);
-    expect(guide.items.map((item) => item.name)).toEqual(expect.arrayContaining(["Infinity Edge"]));
-    expect(guide.itemsFrom).toBe("board");
-    expect(guide.artifacts).toEqual([]);
-    expect(guide.artifactsFrom).toBe("board");
+    expect(guide.itemsFrom).toBe("riot");
+    expect(guide.items.length).toBeGreaterThan(0);
+    expect(guide.items.every((item) => (item.n ?? 0) >= 20)).toBe(true);
+    expect(guide.artifacts.map((item) => item.name)).not.toContain("Horizon Focus");
     expect(guide.comps.map((comp) => comp.name)).toEqual(expect.arrayContaining(["Primal Malphite"]));
 
     const horizon = ARTIFACT_HOLDERS.find((row) => row.artifact === "Horizon Focus");
@@ -60,10 +60,11 @@ describe("meta snapshot", () => {
     expect(horizon?.units).not.toContain("Zyra");
     expect(horizon?.units).not.toContain("Soraka");
     const zyra = guideForChampion(findChampion("Zyra")!.id);
-    expect(zyra.artifacts).toEqual([]);
-    expect(zyra.items.map((item) => item.name)).toEqual(
-      expect.arrayContaining(["Jeweled Gauntlet", "Void Staff", "Spear of Shojin"]),
-    );
+    expect(zyra.itemsFrom).toBe("riot");
+    expect(zyra.artifacts.map((item) => item.name)).not.toContain("Horizon Focus");
+    expect(zyra.artifacts.map((item) => item.name)).not.toContain("Luden's Tempest");
+    expect(zyra.items.map((item) => item.name)).toEqual(expect.arrayContaining(["Spear of Shojin"]));
+    expect(zyra.items.every((item) => (item.n ?? 0) >= 20)).toBe(true);
   });
 
   it("uses ranked Riot items when the sample is large enough", () => {

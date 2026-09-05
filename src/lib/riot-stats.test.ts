@@ -2,17 +2,18 @@ import { describe, expect, it } from "vitest";
 import { STATS, formatItemStat, hasLadderStats, ladderCaption, platformLabel } from "./riot-stats";
 
 describe("committed ladder snapshot", () => {
-  it("ships empty NA stats so the overlay does not invent holders", () => {
+  it("ships an NA ranked snapshot, not invented holders", () => {
     expect(STATS.platform).toBe("na1");
     expect(STATS.region).toBe("americas");
     expect(STATS.queueId).toBe(1100);
     expect(STATS.setNumber).toBe(18);
     expect(STATS.minSample).toBe(20);
-    expect(STATS.matches).toBe(0);
-    expect(STATS.units).toEqual([]);
-    expect(hasLadderStats()).toBe(false);
-    expect(ladderCaption()).toBe("");
+    expect(STATS.matches).toBeGreaterThan(0);
+    expect(STATS.units.length).toBeGreaterThan(0);
+    expect(hasLadderStats()).toBe(true);
+    expect(ladderCaption()).toMatch(/^NA \d+ games$/);
     expect(platformLabel("na1")).toBe("NA");
+    expect(JSON.stringify(STATS)).not.toMatch(/RGAPI/);
   });
 
   it("formats n / avg / delta for the overlay", () => {
