@@ -4,6 +4,8 @@ A personal Teamfight Tactics overlay. Same job as the MetaTFT Overwolf app — c
 
 It is a **static reference**. You write your own boards before a match and pin them. It does not scout the lobby, read the live client, estimate win chance, or tell you what to pick.
 
+**Current release: [0.1.4](https://github.com/DavinAnalytics/tactidesk/releases/tag/v0.1.4)** (2026-09-05). Header shows Set 18 · Enchanted Wilds · Patch 18.1d · NA 271 games. Session handoff for the next agent: [AGENTS.md](./AGENTS.md).
+
 ## Install on Windows
 
 You do not need Node.js, Git, or Overwolf.
@@ -22,7 +24,7 @@ If a release is not up yet, open the [Windows installer workflow](https://github
 
 Installed copies check GitHub Releases on launch and every few hours. When a newer version is published, TactiDesk downloads it in the background. Click **Restart** when the banner says the update is ready, or just quit the app — it installs on exit. It will not force a restart during a match.
 
-The first setup file you already installed does not include this updater. Install **0.1.1 or newer** once. After that, you should not need to run a setup `.exe` again.
+The first setup file (0.1.0) did not include this updater. Anyone still on that build should install **0.1.1 or newer** once. After that, do not run a setup `.exe` again — 0.1.4 is an in-app update.
 
 The repository is public, so updates do not need a GitHub token.
 
@@ -97,7 +99,7 @@ Or copy `.env.example` to `.env` and put the key there. `.env` is gitignored.
 
 Defaults take Challenger + Grandmaster + Master, keep the top 35 by LP, and pull 12 recent match ids each. The script stays under the development-key budget (20 requests/s, 100 / 2 minutes) and honors `429 Retry-After`. A first useful NA pass is tens of minutes.
 
-Until that file has matches, Units and Board show items from the curated boards only — no guessed artifacts. After a refresh, pairs with `n ≥ 20` show as `n=412 · 3.94 · −0.21` (games, average place, delta vs that unit’s baseline). Negative delta is better.
+**0.1.4 already includes a snapshot:** 271 ranked NA games (fetched 2026-09-05). Units and Board show ladder pairs when `n ≥ 20`, otherwise items from the curated boards only — no guessed artifacts. Example line: `n=181 · 4.39 · −0.22` (games, average place, delta vs that unit’s baseline). Negative delta is better. Artifacts rarely clear `n = 20` at this sample size; empty artifact recs are correct.
 
 Do not put the key in the Electron app, GitHub Actions, or a commit. A production key + nightly Action can wait until you have one.
 
