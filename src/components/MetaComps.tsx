@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { MetaTier, ResolvedMetaComp } from "../lib/meta";
-import { META_COMPS, META_PATCH, activeTraits, displayUnits, isReroll, threeStarNames } from "../lib/meta";
+import { META_COMPS, activeTraits, displayUnits, isReroll, threeStarNames } from "../lib/meta";
 import { itemById } from "../data/catalog";
 import { Icon } from "./Icon";
 import { SearchBox } from "./SearchBox";
@@ -29,9 +29,6 @@ export function MetaComps({ onPin, onOpen }: Props) {
 
   return (
     <div className="stack">
-      <p className="muted">
-        Patch {META_PATCH} snapshot. Static boards you can pin — not live match stats.
-      </p>
       <div className="toolbar">
         <SearchBox value={query} onChange={setQuery} placeholder="Search comps, units, traits" />
       </div>

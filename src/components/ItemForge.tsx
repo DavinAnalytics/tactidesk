@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ITEM_GUIDE, META_PATCH } from "../lib/meta";
+import { ITEM_GUIDE } from "../lib/meta";
 import { itemById } from "../data/catalog";
 import { combineItems, componentsOf } from "../lib/items";
 import { setData } from "../data/catalog";
@@ -15,7 +15,7 @@ type Props = {
 export function ItemForge({ onPickItem }: Props) {
   const [mode, setMode] = useState<"holders" | "forge">("holders");
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState(ITEM_GUIDE[0]?.itemId ?? "");
+  const [selectedId, setSelectedId] = useState("");
   const components = useMemo(() => componentsOf(setData.items), []);
   const [left, setLeft] = useState<string | null>(null);
   const [right, setRight] = useState<string | null>(null);
@@ -52,68 +52,67 @@ export function ItemForge({ onPickItem }: Props) {
 
       {mode === "holders" ? (
         <>
-          <p className="muted">
-            Patch {META_PATCH}. Units that take this item on the pinned meta boards — not live win rates.
-          </p>
           <div className="toolbar">
             <SearchBox value={query} onChange={setQuery} placeholder="Search items or holders" />
           </div>
           <div className="item-guide">
-            {rows.map((row) => (
-              <button
-                type="button"
-                key={row.itemId}
-                className={selected?.itemId === row.itemId ? "guide-row on" : "guide-row"}
-                onClick={() => setSelectedId(row.itemId)}
-                onDoubleClick={() => onPickItem?.(row.itemId)}
-              >
-                <Icon src={row.icon} alt={row.name} size={32} />
-                <span className="guide-name">
-                  {row.name}
-                  <em>{row.kind}</em>
-                </span>
-                <span className="guide-holders">
-                  {row.holders.slice(0, 5).map((holder) => (
-                    <Icon key={holder.championId} src={holder.icon} alt={holder.name} cost={holder.cost} size={26} />
-                  ))}
-                </span>
-              </button>
-            ))}
-          </div>
-          {selected ? (
-            <div className="detail compact-detail">
-              <div className="detail-head">
-                <Icon src={selected.icon} alt={selected.name} size={44} />
-                <div>
-                  <h4>{selected.name}</h4>
-                  <p className="muted">{selected.kind}</p>
-                </div>
-              </div>
-              {selectedItem?.text ? <p>{selectedItem.text}</p> : null}
-              {selectedItem?.composition?.length === 2 ? (
-                <p className="muted">
-                  Recipe: {itemById.get(selectedItem.composition[0])?.name} + {itemById.get(selectedItem.composition[1])?.name}
-                </p>
-              ) : null}
-              <h4>Best on</h4>
-              <div className="holder-list">
-                {selected.holders.map((holder) => (
-                  <div key={holder.championId} className="holder-row">
-                    <Icon src={holder.icon} alt={holder.name} cost={holder.cost} size={36} />
-                    <span>
-                      <strong>{holder.name}</strong>
-                      <em>{holder.comps.join(" · ")}</em>
+            {rows.map((row) => {
+              const open = selected?.itemId === row.itemId;
+              const openItem = open ? selectedItem : undefined;
+              return (
+                <div key={row.itemId} className={open ? "guide-block on" : "guide-block"}>
+                  <button
+                    type="button"
+                    className={open ? "guide-row on" : "guide-row"}
+                    onClick={() => setSelectedId(open ? "" : row.itemId)}
+                  >
+                    <Icon src={row.icon} alt={row.name} size={32} />
+                    <span className="guide-name">
+                      {row.name}
+                      <em>{row.kind}</em>
                     </span>
-                  </div>
-                ))}
-              </div>
-              {onPickItem ? (
-                <button type="button" className="primary" onClick={() => onPickItem(selected.itemId)}>
-                  Add to selected unit
-                </button>
-              ) : null}
-            </div>
-          ) : null}
+                    <span className="guide-holders">
+                      {row.holders.slice(0, 5).map((holder) => (
+                        <Icon key={holder.championId} src={holder.icon} alt={holder.name} cost={holder.cost} size={26} />
+                      ))}
+                    </span>
+                  </button>
+                  {open ? (
+                    <div className="guide-detail">
+                      {openItem?.text ? <p>{openItem.text}</p> : null}
+                      {openItem?.composition?.length === 2 ? (
+                        <p className="muted">
+                          Recipe: {itemById.get(openItem.composition[0])?.name} +{" "}
+                          {itemById.get(openItem.composition[1])?.name}
+                        </p>
+                      ) : null}
+                      <h4>Best on</h4>
+                      {row.holders.length ? (
+                        <div className="holder-list">
+                          {row.holders.map((holder) => (
+                            <div key={holder.championId} className="holder-row">
+                              <Icon src={holder.icon} alt={holder.name} cost={holder.cost} size={36} />
+                              <span>
+                                <strong>{holder.name}</strong>
+                                <em>{holder.comps.join(" · ")}</em>
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="muted">No pinned holders yet</p>
+                      )}
+                      {onPickItem ? (
+                        <button type="button" className="primary" onClick={() => onPickItem(row.itemId)}>
+                          Add to selected unit
+                        </button>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
         </>
       ) : (
         <section>

@@ -34,7 +34,7 @@ export type Item = {
   text: string;
   composition: string[];
   unique: boolean;
-  kind: "component" | "completed" | "emblem";
+  kind: "component" | "completed" | "emblem" | "artifact";
 };
 
 export type Augment = {

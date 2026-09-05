@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { setData } from "./data/catalog";
-import { notebookFromMeta } from "./lib/meta";
+import { META_PATCH, notebookFromMeta } from "./lib/meta";
+import { APP_VERSION } from "./lib/version";
 import type { Comp, OverlayTab } from "./data/types";
 import type { ResolvedMetaComp } from "./lib/meta";
 import {
   addUnit,
   createComp,
+  removeUnit,
   exportComps,
   importComps,
   loadAugmentNotes,
@@ -19,7 +21,6 @@ import {
 import { AugmentBrowser } from "./components/AugmentBrowser";
 import { CompLibrary } from "./components/CompLibrary";
 import { ItemForge } from "./components/ItemForge";
-import { OddsTable } from "./components/OddsTable";
 import { PinStrip } from "./components/PinStrip";
 import { TraitBrowser } from "./components/TraitBrowser";
 import { UnitBrowser } from "./components/UnitBrowser";
@@ -129,9 +130,11 @@ export function App() {
         <div className="drag">
           <span className="mark">TD</span>
           <div>
-            <strong>TactiDesk</strong>
+            <strong>
+              TactiDesk <span className="ver">v{APP_VERSION}</span>
+            </strong>
             <small>
-              Set {setData.set} · {setData.name}
+              Set {setData.set} · {setData.name} · Patch {META_PATCH}
             </small>
           </div>
         </div>
@@ -174,12 +177,11 @@ export function App() {
           <div className="stack">
             <PinStrip
               comps={comps}
-              onOpen={(id) => {
-                setActiveId(id);
-                setTab("comps");
+              onRemoveUnit={(compId, championId) => {
+                const found = comps.find((comp) => comp.id === compId);
+                if (found) updateComp(removeUnit(found, championId));
               }}
             />
-            {!settings.compact ? <OddsTable /> : null}
           </div>
         ) : null}
         {tab === "comps" ? (

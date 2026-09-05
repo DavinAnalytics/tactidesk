@@ -65,6 +65,15 @@ export function addUnit(comp: Comp, championId: string): Comp {
   return { ...comp, units: [...comp.units, unit], updatedAt: Date.now() };
 }
 
+export function removeUnit(comp: Comp, championId: string): Comp {
+  if (!comp.units.some((unit) => unit.championId === championId)) return comp;
+  return {
+    ...comp,
+    units: comp.units.filter((unit) => unit.championId !== championId),
+    updatedAt: Date.now(),
+  };
+}
+
 export function loadAugmentNotes(): Record<string, string> {
   return readJson<Record<string, string>>(NOTES_KEY, {});
 }

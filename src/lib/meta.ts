@@ -1,5 +1,6 @@
 import { championById, itemById, setData, traitByName } from "../data/catalog";
 import {
+  ARTIFACT_HOLDERS,
   EMBLEM_HOLDERS,
   META_PATCH,
   RAW_META_COMPS,
@@ -124,6 +125,15 @@ export function holdersByItem(): Map<string, ItemHolder[]> {
     }
   }
 
+  for (const row of ARTIFACT_HOLDERS) {
+    const artifact = findItem(row.artifact);
+    if (!artifact) continue;
+    for (const unitName of row.units) {
+      const champ = findChampion(unitName);
+      if (champ) add(artifact.id, champ.id, `${artifact.name} holder`);
+    }
+  }
+
   for (const list of map.values()) {
     list.sort((a, b) => b.comps.length - a.comps.length);
   }
@@ -153,13 +163,101 @@ export function itemGuideRows(): ItemGuideRow[] {
       }),
     });
   }
-  const kindRank = { completed: 0, emblem: 1, component: 2 };
+  const seen = new Set(rows.map((row) => row.itemId));
+  for (const item of setData.items) {
+    if (item.kind !== "artifact" || seen.has(item.id)) continue;
+    rows.push({
+      itemId: item.id,
+      name: item.name,
+      kind: item.kind,
+      icon: item.icon,
+      holders: [],
+    });
+  }
+  const kindRank = { completed: 0, artifact: 1, emblem: 2, component: 3 };
   rows.sort((a, b) => {
     const kindDelta = (kindRank[a.kind as keyof typeof kindRank] ?? 9) - (kindRank[b.kind as keyof typeof kindRank] ?? 9);
     if (kindDelta) return kindDelta;
     return b.holders.length - a.holders.length || a.name.localeCompare(b.name);
   });
   return rows;
+}
+
+const TIER_RANK: Record<MetaTier, number> = { S: 0, A: 1, B: 2, C: 3 };
+
+export type UnitGuideItem = { itemId: string; name: string; icon: string; kind: string };
+export type UnitGuideComp = { id: string; name: string; tier: MetaTier; style: string };
+export type UnitGuide = {
+  items: UnitGuideItem[];
+  emblems: UnitGuideItem[];
+  artifacts: UnitGuideItem[];
+  comps: UnitGuideComp[];
+};
+
+function toGuideItem(itemId: string): UnitGuideItem | null {
+  const item = itemById.get(itemId);
+  if (!item) return null;
+  return { itemId: item.id, name: item.name, icon: item.icon, kind: item.kind };
+}
+
+export function guideForChampion(championId: string): UnitGuide {
+  const counts = new Map<string, number>();
+  const comps: UnitGuideComp[] = [];
+  for (const comp of META_COMPS) {
+    const unit = comp.units.find((entry) => entry.championId === championId);
+    if (!unit) continue;
+    comps.push({ id: comp.id, name: comp.name, tier: comp.tier, style: comp.style });
+    for (const itemId of unit.itemIds) {
+      counts.set(itemId, (counts.get(itemId) || 0) + 1);
+    }
+  }
+  comps.sort((a, b) => TIER_RANK[a.tier] - TIER_RANK[b.tier] || a.name.localeCompare(b.name));
+
+  const ranked = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([itemId]) => toGuideItem(itemId))
+    .filter((item): item is UnitGuideItem => Boolean(item));
+
+  const items = ranked.filter((item) => item.kind === "completed").slice(0, 6);
+  const emblems = uniqueGuideItems([
+    ...ranked.filter((item) => item.kind === "emblem"),
+    ...guideItemsFromTable(EMBLEM_HOLDERS, "emblem", championId),
+  ]).slice(0, 6);
+  const artifacts = uniqueGuideItems([
+    ...ranked.filter((item) => item.kind === "artifact"),
+    ...guideItemsFromTable(ARTIFACT_HOLDERS, "artifact", championId),
+  ]).slice(0, 3);
+
+  return { items, emblems, artifacts, comps };
+}
+
+function guideItemsFromTable(
+  rows: Array<{ emblem?: string; artifact?: string; units: string[] }>,
+  kind: "emblem" | "artifact",
+  championId: string,
+): UnitGuideItem[] {
+  const champ = championById.get(championId);
+  if (!champ) return [];
+  const found: UnitGuideItem[] = [];
+  for (const row of rows) {
+    const label = kind === "emblem" ? row.emblem : row.artifact;
+    if (!label || !row.units.includes(champ.name)) continue;
+    const item = findItem(label);
+    const mapped = item ? toGuideItem(item.id) : null;
+    if (mapped) found.push(mapped);
+  }
+  return found;
+}
+
+function uniqueGuideItems(items: UnitGuideItem[]): UnitGuideItem[] {
+  const seen = new Set<string>();
+  const unique: UnitGuideItem[] = [];
+  for (const item of items) {
+    if (seen.has(item.itemId)) continue;
+    seen.add(item.itemId);
+    unique.push(item);
+  }
+  return unique;
 }
 
 export const ITEM_GUIDE = itemGuideRows();

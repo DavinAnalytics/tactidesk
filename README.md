@@ -32,11 +32,10 @@ To ship a change to an already-installed copy: bump `version` in `package.json`,
 
 - Overlay or browser panel for **Set 18: Enchanted Wilds**
 - Meta comps tier list (S–C) you can pin, plus your own boards
-- Items page with usual holders for each completed item and emblem
+- Items page with usual holders for completed items, artifacts, and emblems
 - Item forge (component + component)
 - Unit / trait / augment encyclopedia from [Community Dragon](https://www.communitydragon.org/)
 - Personal augment notes stored only on this machine
-- Shop-odds table (pre-game reference)
 - Hide / show with `Ctrl+Shift+T`
 - No ads, no telemetry, no Overwolf
 

@@ -154,7 +154,9 @@ async function main() {
     const composition = raw.composition || [];
     const isComponent = componentIds.has(apiName);
     const isCrafted = composition.length === 2;
-    if (!isComponent && !isCrafted) continue;
+    const isArtifact =
+      apiName.startsWith("DA_Artifact_") && !/Artifactinate/i.test(apiName);
+    if (!isComponent && !isCrafted && !isArtifact) continue;
     items.push({
       id: apiName,
       name: raw.name,
@@ -162,7 +164,13 @@ async function main() {
       text: substitute(raw.desc, raw.effects),
       composition,
       unique: Boolean(raw.unique),
-      kind: isComponent ? "component" : apiName.includes("Emblem") ? "emblem" : "completed",
+      kind: isComponent
+        ? "component"
+        : isArtifact
+          ? "artifact"
+          : apiName.includes("Emblem")
+            ? "emblem"
+            : "completed",
     });
   }
 
