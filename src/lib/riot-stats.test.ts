@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { STATS, formatItemStat, hasLadderStats, ladderCaption, platformLabel } from "./riot-stats";
+import { STATS, formatItemStat, hasLadderStats, ladderCaption, minSampleForKind, platformLabel, riotHoldersForItem, riotItemsForChampion } from "./riot-stats";
+import { findChampion, findItem } from "./lookup";
 
 describe("committed ladder snapshot", () => {
   it("ships an NA ranked snapshot, not invented holders", () => {
@@ -16,9 +17,31 @@ describe("committed ladder snapshot", () => {
     expect(JSON.stringify(STATS)).not.toMatch(/RGAPI/);
   });
 
+  it("keeps completed items at n=20 and artifacts at n=3", () => {
+    expect(minSampleForKind("completed")).toBe(20);
+    expect(minSampleForKind("emblem")).toBe(20);
+    expect(minSampleForKind("artifact")).toBe(3);
+  });
+
   it("formats n / avg / delta for the overlay", () => {
     expect(formatItemStat({ n: 412, avgPlace: 3.94, delta: -0.21 })).toBe("n=412 · 3.94 · −0.21");
     expect(formatItemStat({ n: 20, avgPlace: 4, delta: 0 })).toBe("n=20 · 4.00 · 0.00");
     expect(formatItemStat({})).toBe("");
+  });
+
+  it("lists Veigar on Eternal Pact from the NA snapshot", () => {
+    const pact = findItem("Eternal Pact");
+    const veigar = findChampion("Veigar");
+    expect(pact?.kind).toBe("artifact");
+    const holders = riotHoldersForItem(pact!.id);
+    expect(holders.map((holder) => holder.name)).toContain("Veigar");
+    expect(holders.find((holder) => holder.championId === veigar!.id)?.n).toBeGreaterThanOrEqual(3);
+  });
+
+  it("does not promote a one-off artifact onto a unit rec", () => {
+    const zyra = findChampion("Zyra")!.id;
+    const artifacts = riotItemsForChampion(zyra, "artifact");
+    expect(artifacts.map((item) => item.name)).not.toContain("Horizon Focus");
+    expect(artifacts.every((item) => item.n >= 3)).toBe(true);
   });
 });

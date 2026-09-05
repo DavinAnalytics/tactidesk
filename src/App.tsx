@@ -57,15 +57,14 @@ export function App() {
     const onKey = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.shiftKey && event.code === "KeyT") {
         event.preventDefault();
+        if (window.tactidesk?.minimize) return;
         setHidden((value) => !value);
       }
     };
     window.addEventListener("keydown", onKey);
-    const offToggle = window.tactidesk?.onToggleOverlay(() => setHidden((value) => !value));
     const offUpdate = window.tactidesk?.onUpdateStatus((next) => setUpdate(next));
     return () => {
       window.removeEventListener("keydown", onKey);
-      offToggle?.();
       offUpdate?.();
     };
   }, []);
@@ -117,13 +116,23 @@ export function App() {
     window.setTimeout(() => setStatus(""), 1800);
   }
 
-  if (hidden) {
-    return (
-      <button type="button" className="peek" onClick={() => setHidden(false)} title="Show TactiDesk">
-        TD
-      </button>
-    );
+  function concealOverlay() {
+    if (window.tactidesk?.minimize) {
+      void window.tactidesk.minimize();
+      return;
+    }
+    setHidden(true);
   }
+
+  function quitOverlay() {
+    if (window.tactidesk?.quit) {
+      void window.tactidesk.quit();
+      return;
+    }
+    window.close();
+  }
+
+  if (hidden) return null;
 
   return (
     <div className="shell" style={{ ["--panel-alpha" as string]: String(settings.opacity) }}>
@@ -144,8 +153,11 @@ export function App() {
           <button type="button" onClick={() => setSettings((s) => ({ ...s, compact: !s.compact }))}>
             {settings.compact ? "Expand" : "Compact"}
           </button>
-          <button type="button" onClick={() => setHidden(true)} title="Hide (Ctrl+Shift+T)">
+          <button type="button" onClick={concealOverlay} title="Minimize (Ctrl+Shift+T)">
             Hide
+          </button>
+          <button type="button" className="quit" onClick={quitOverlay} title="Close TactiDesk">
+            Close
           </button>
         </div>
       </header>
@@ -240,8 +252,8 @@ export function App() {
       </main>
 
       <footer>
-        Personal static overlay. No lobby scouting, no live win odds, no ads. Ctrl+Shift+T hides it.
-        TactiDesk isn’t endorsed by Riot Games.
+        Personal static overlay. No lobby scouting, no live win odds, no ads. Ctrl+Shift+T minimizes it.
+        Close quits. TactiDesk isn’t endorsed by Riot Games.
       </footer>
     </div>
   );
