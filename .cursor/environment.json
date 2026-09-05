@@ -1,0 +1,17 @@
+{
+  "name": "TactiDesk",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "vite",
+      "command": "npm run dev",
+      "description": "Vite dev server for the TactiDesk web panel at http://127.0.0.1:5173"
+    }
+  ],
+  "ports": [
+    {
+      "name": "vite",
+      "port": 5173
+    }
+  ]
+}
